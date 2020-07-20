@@ -8,10 +8,12 @@ LDFLAGS := -I$(INC_DIR)
 CPPFLAGS := -std=c++11 -I$(INC_DIR) 
 CXXFLAGS := -MMD
 
-test: MedicalTestRequestApplication.out
+test: all
 	./MedicalTestRequestApplication.out
 
-MedicalTestRequestApplication.out: directories $(OBJ_FILES)
+all: $(OBJ_DIR) MedicalTestRequestApplication.out
+
+MedicalTestRequestApplication.out: $(OBJ_FILES)
 	g++ -o $@ $^ $(LDFLAGS)
 
 $(OBJ_DIR)/rsdl.o: $(RSDL_DIR)/rsdl.cpp $(RSDL_DIR)/rsdl.hpp
@@ -23,6 +25,5 @@ clean:
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(INC_DIR)/%.hpp
 	g++ $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
-directories:
-	rm -rf $(OBJ_DIR)
-	mkdir $(OBJ_DIR)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
